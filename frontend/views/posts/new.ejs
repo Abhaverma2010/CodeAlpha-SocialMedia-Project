@@ -1,0 +1,77 @@
+<!-- views/posts/new.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Post | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <div class="new-post-card">
+      <div class="new-post-header">
+        <img src="<%= currentUser.avatar %>" alt="" class="post-avatar" />
+        <div>
+          <div class="post-author-name"><%= currentUser.name %></div>
+          <div class="post-author-username">@<%= currentUser.username %></div>
+        </div>
+      </div>
+
+      <form action="/posts" method="POST" enctype="multipart/form-data" class="new-post-form">
+
+        <div class="form-group">
+          <textarea
+            name="caption"
+            placeholder="What's on your mind?"
+            rows="4"
+            class="post-textarea"
+            maxlength="2200"
+            id="captionInput"
+          ></textarea>
+          <div class="char-count"><span id="charCount">0</span>/2200</div>
+        </div>
+
+        <div class="form-group">
+          <label class="image-upload-label">
+            📸 Add Photo (optional)
+            <input type="file" name="image" accept="image/*" id="imageInput" hidden />
+          </label>
+          <img id="imagePreview" src="" alt="" class="post-image-preview hidden" />
+        </div>
+
+        <div class="new-post-actions">
+          <a href="/feed" class="btn btn-outline">Cancel</a>
+          <button type="submit" class="btn btn-primary btn-lg">Share Post ✨</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+  <script>
+    const caption = document.getElementById("captionInput");
+    const count = document.getElementById("charCount");
+    caption.addEventListener("input", () => {
+      count.textContent = caption.value.length;
+      count.style.color = caption.value.length > 2000 ? "#e94560" : "";
+    });
+
+    document.getElementById("imageInput").addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const preview = document.getElementById("imagePreview");
+          preview.src = e.target.result;
+          preview.classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>

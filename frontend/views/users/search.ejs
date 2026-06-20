@@ -1,0 +1,54 @@
+<!-- views/users/search.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <h1 class="page-title">🔍 Search People</h1>
+
+    <form action="/users/search" method="GET" class="search-form">
+      <input
+        type="text"
+        name="q"
+        value="<%= query %>"
+        placeholder="Search by name or username..."
+        class="search-bar-input"
+        autofocus
+      />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <% if (query && users.length === 0) { %>
+      <div class="empty-state mt-4">
+        <p>No users found for "<%= query %>"</p>
+      </div>
+    <% } %>
+
+    <% if (users.length > 0) { %>
+      <p class="result-count mt-4"><%= users.length %> result(s) for "<%= query %>"</p>
+      <div class="user-list">
+        <% users.forEach(user => { %>
+          <a href="/users/<%= user.username %>" class="user-list-item">
+            <img src="<%= user.avatar %>" alt="" class="user-list-avatar" />
+            <div class="user-list-info">
+              <span class="user-list-name"><%= user.name %></span>
+              <span class="user-list-username">@<%= user.username %></span>
+            </div>
+            <span class="chevron">→</span>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

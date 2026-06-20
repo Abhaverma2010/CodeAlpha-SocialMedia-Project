@@ -1,0 +1,19 @@
+<!-- views/error.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('partials/navbar') %>
+  <div class="container mt-4 center">
+    <h1 style="font-size:4rem">😕</h1>
+    <h2><%= title %></h2>
+    <p class="muted"><%= message %></p>
+    <a href="/" class="btn btn-primary mt-2">Go Home</a>
+  </div>
+</body>
+</html>

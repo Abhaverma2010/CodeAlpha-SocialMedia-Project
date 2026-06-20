@@ -1,0 +1,7 @@
+<!-- partials/flash.ejs -->
+<% if (flash) { %>
+  <div class="flash flash-<%= flash.type %>">
+    <span><%= flash.message %></span>
+    <button onclick="this.parentElement.remove()">✕</button>
+  </div>
+<% } %>

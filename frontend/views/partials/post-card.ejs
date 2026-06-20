@@ -1,0 +1,75 @@
+<!-- partials/post-card.ejs -->
+<!-- Usage: <%- include('partials/post-card', { post, currentUserId }) %> -->
+
+<div class="post-card">
+  <!-- Post Header: avatar + name + username + delete -->
+  <div class="post-header">
+    <a href="/users/<%= post.author.username %>" class="post-author-link">
+      <img src="<%= post.author.avatar %>" alt="<%= post.author.name %>" class="post-avatar" />
+      <div>
+        <span class="post-author-name"><%= post.author.name %></span>
+        <span class="post-author-username">@<%= post.author.username %></span>
+      </div>
+    </a>
+    <div class="post-meta">
+      <span class="post-time"><%= new Date(post.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short' }) %></span>
+      <% if (currentUserId && (post.author._id.toString() === currentUserId.toString())) { %>
+        <form action="/posts/<%= post._id %>?_method=DELETE" method="POST" style="display:inline">
+          <button type="submit" class="btn-icon" onclick="return confirm('Delete this post?')" title="Delete">🗑️</button>
+        </form>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Post Image (optional) -->
+  <% if (post.image) { %>
+    <img src="<%= post.image %>" alt="Post image" class="post-image" />
+  <% } %>
+
+  <!-- Caption -->
+  <div class="post-caption">
+    <a href="/users/<%= post.author.username %>" class="caption-username">@<%= post.author.username %></a>
+    <%= post.caption %>
+  </div>
+
+  <!-- Like + Comment counts -->
+  <div class="post-actions">
+    <form action="/posts/<%= post._id %>/like" method="POST" style="display:inline">
+      <button type="submit" class="btn-like <%= post.likes.some(id => id.toString() === (currentUserId || '').toString()) ? 'liked' : '' %>">
+        ❤️ <span><%= post.likes.length %></span>
+      </button>
+    </form>
+    <span class="comment-count">💬 <%= post.comments.length %></span>
+  </div>
+
+  <!-- Comments Section -->
+  <% if (post.comments.length > 0) { %>
+    <div class="post-comments">
+      <% post.comments.slice(-3).forEach(comment => { %> <!-- show last 3 comments -->
+        <div class="comment">
+          <img src="<%= comment.author.avatar %>" alt="" class="comment-avatar" />
+          <div class="comment-body">
+            <a href="/users/<%= comment.author.username %>" class="comment-username">@<%= comment.author.username %></a>
+            <span class="comment-text"><%= comment.text %></span>
+          </div>
+          <% if (currentUserId && (comment.author._id.toString() === currentUserId.toString())) { %>
+            <form action="/posts/<%= post._id %>/comments/<%= comment._id %>/delete" method="POST">
+              <button type="submit" class="btn-icon-sm" title="Delete comment">✕</button>
+            </form>
+          <% } %>
+        </div>
+      <% }) %>
+      <% if (post.comments.length > 3) { %>
+        <p class="view-all-comments">View all <%= post.comments.length %> comments</p>
+      <% } %>
+    </div>
+  <% } %>
+
+  <!-- Add Comment Form -->
+  <% if (currentUserId) { %>
+    <form action="/posts/<%= post._id %>/comment" method="POST" class="comment-form">
+      <input type="text" name="text" placeholder="Add a comment..." class="comment-input" required />
+      <button type="submit" class="btn btn-primary btn-sm">Post</button>
+    </form>
+  <% } %>
+</div>

@@ -1,0 +1,73 @@
+<!-- views/posts/feed.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="feed-layout container">
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar-left">
+      <div class="sidebar-profile">
+        <img src="<%= currentUser.avatar %>" alt="" class="sidebar-avatar" />
+        <a href="/users/<%= currentUser.username %>" class="sidebar-name"><%= currentUser.name %></a>
+        <span class="sidebar-username">@<%= currentUser.username %></span>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/feed" class="sidebar-link active">🏠 Feed</a>
+        <a href="/explore" class="sidebar-link">🔭 Explore</a>
+        <a href="/users/discover" class="sidebar-link">👥 Discover People</a>
+        <a href="/posts/new" class="sidebar-link">✏️ New Post</a>
+        <a href="/users/<%= currentUser.username %>" class="sidebar-link">👤 My Profile</a>
+        <a href="/users/settings" class="sidebar-link">⚙️ Settings</a>
+      </nav>
+    </aside>
+
+    <!-- Main Feed -->
+    <main class="feed-main">
+      <!-- Quick Post Box -->
+      <div class="quick-post-box">
+        <img src="<%= currentUser.avatar %>" alt="" class="quick-post-avatar" />
+        <a href="/posts/new" class="quick-post-input">What's on your mind, <%= currentUser.name.split(' ')[0] %>?</a>
+        <a href="/posts/new" class="btn btn-primary btn-sm">Share</a>
+      </div>
+
+      <!-- Posts -->
+      <% if (posts.length === 0) { %>
+        <div class="empty-feed">
+          <div class="empty-icon">📭</div>
+          <h3>Your feed is empty</h3>
+          <p>Follow some people to see their posts here!</p>
+          <a href="/users/discover" class="btn btn-primary mt-2">Discover People</a>
+        </div>
+      <% } else { %>
+        <% posts.forEach(post => { %>
+          <%- include('../partials/post-card', { post, currentUserId }) %>
+        <% }) %>
+      <% } %>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="sidebar-right">
+      <div class="sidebar-widget">
+        <h3 class="widget-title">Discover People</h3>
+        <p class="widget-sub"><a href="/users/discover">Find new people to follow →</a></p>
+      </div>
+      <div class="sidebar-widget">
+        <h3 class="widget-title">🔭 Explore</h3>
+        <p class="widget-sub"><a href="/explore">See all public posts →</a></p>
+      </div>
+    </aside>
+
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

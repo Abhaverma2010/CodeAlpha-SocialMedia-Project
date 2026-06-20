@@ -1,0 +1,46 @@
+<!-- views/users/suggested.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discover People | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <h1 class="page-title">👥 Discover People</h1>
+    <p class="page-subtitle">People you might want to follow</p>
+
+    <% if (users.length === 0) { %>
+      <div class="empty-state">
+        <p>You're following everyone! Check back later.</p>
+      </div>
+    <% } else { %>
+      <div class="discover-grid">
+        <% users.forEach(user => { %>
+          <div class="discover-card">
+            <a href="/users/<%= user.username %>">
+              <img src="<%= user.avatar %>" alt="" class="discover-avatar" />
+              <h3 class="discover-name"><%= user.name %></h3>
+              <p class="discover-username">@<%= user.username %></p>
+              <% if (user.bio) { %>
+                <p class="discover-bio"><%= user.bio %></p>
+              <% } %>
+              <p class="discover-followers"><%= user.followers.length %> followers</p>
+            </a>
+            <form action="/users/<%= user._id %>/follow" method="POST">
+              <button type="submit" class="btn btn-primary btn-sm full-width">Follow</button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

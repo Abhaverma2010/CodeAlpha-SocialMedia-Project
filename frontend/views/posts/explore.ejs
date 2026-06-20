@@ -1,0 +1,36 @@
+<!-- views/posts/explore.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <h1 class="page-title">🔭 Explore</h1>
+    <p class="page-subtitle">Discover posts from everyone on Vibe</p>
+
+    <% if (posts.length === 0) { %>
+      <div class="empty-feed">
+        <div class="empty-icon">📭</div>
+        <h3>No posts yet</h3>
+        <p>Be the first to share something!</p>
+        <a href="/posts/new" class="btn btn-primary mt-2">Create Post</a>
+      </div>
+    <% } else { %>
+      <div class="explore-grid">
+        <% posts.forEach(post => { %>
+          <%- include('../partials/post-card', { post, currentUserId }) %>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

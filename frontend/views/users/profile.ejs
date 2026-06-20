@@ -1,0 +1,80 @@
+<!-- views/users/profile.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+
+    <div class="profile-card">
+      <div class="profile-cover"></div>
+      <div class="profile-info">
+        <img src="<%= profileUser.avatar %>" alt="<%= profileUser.name %>" class="profile-avatar" />
+
+        <div class="profile-details">
+          <div class="profile-name-row">
+            <h1 class="profile-name"><%= profileUser.name %></h1>
+            <% if (isOwnProfile) { %>
+              <a href="/users/settings" class="btn btn-outline btn-sm">Edit Profile</a>
+            <% } else { %>
+              <form action="/users/<%= profileUser._id %>/follow" method="POST" style="display:inline">
+                <button type="submit" class="btn <%= isFollowing ? 'btn-outline' : 'btn-primary' %> btn-sm">
+                  <%= isFollowing ? 'Unfollow' : 'Follow' %>
+                </button>
+              </form>
+            <% } %>
+          </div>
+
+          <p class="profile-username">@<%= profileUser.username %></p>
+          <% if (profileUser.bio) { %>
+            <p class="profile-bio"><%= profileUser.bio %></p>
+          <% } %>
+
+          <div class="profile-stats">
+            <div class="stat">
+              <span class="stat-num"><%= posts.length %></span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <a href="/users/<%= profileUser.username %>/followers" class="stat">
+              <span class="stat-num"><%= profileUser.followers.length %></span>
+              <span class="stat-label">Followers</span>
+            </a>
+            <a href="/users/<%= profileUser.username %>/following" class="stat">
+              <span class="stat-num"><%= profileUser.following.length %></span>
+              <span class="stat-label">Following</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-posts-section">
+      <h2 class="section-title">Posts</h2>
+      <% if (posts.length === 0) { %>
+        <div class="empty-state">
+          <p>No posts yet.</p>
+          <% if (isOwnProfile) { %>
+            <a href="/posts/new" class="btn btn-primary mt-2">Share your first post</a>
+          <% } %>
+        </div>
+      <% } else { %>
+        <div class="posts-feed">
+          <% posts.forEach(post => { %>
+            <%- include('../partials/post-card', { post, currentUserId }) %>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

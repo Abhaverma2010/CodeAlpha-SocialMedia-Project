@@ -1,0 +1,50 @@
+<!-- views/auth/register.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">⚡ Vibe</div>
+      <h1>Create Account</h1>
+      <p class="auth-subtitle">Join thousands sharing their world</p>
+
+      <form action="/auth/register" method="POST" class="auth-form">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="name" placeholder="Abha Sharma" required />
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" name="username" placeholder="abha_codes" pattern="[a-z0-9_.]+" title="Lowercase letters, numbers, _ and . only" required />
+          <small class="form-hint">Letters, numbers, _ and . only. No spaces.</small>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="abha@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Min 6 characters" minlength="6" required />
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" name="confirmPassword" placeholder="Repeat password" required />
+        </div>
+        <button type="submit" class="btn btn-primary full-width btn-lg">Create Account</button>
+      </form>
+
+      <p class="auth-footer">Already have an account? <a href="/auth/login">Login</a></p>
+    </div>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>

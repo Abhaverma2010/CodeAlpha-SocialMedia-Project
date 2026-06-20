@@ -1,0 +1,54 @@
+<!-- views/landing.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="landing-body">
+  <%- include('partials/navbar') %>
+
+  <section class="landing-hero">
+    <div class="landing-content">
+      <div class="landing-text">
+        <h1>Share Your <span class="gradient-text">Vibe</span> With The World</h1>
+        <p>Connect with people, share moments, follow creators, and build your community.</p>
+        <div class="landing-cta">
+          <a href="/auth/register" class="btn btn-primary btn-lg">Get Started — It's Free</a>
+          <a href="/auth/login" class="btn btn-outline btn-lg">Login</a>
+        </div>
+      </div>
+      <div class="landing-features">
+        <div class="feature-card">
+          <span class="feature-icon">📸</span>
+          <h3>Share Posts</h3>
+          <p>Share photos and thoughts with your followers</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">❤️</span>
+          <h3>Like & Comment</h3>
+          <p>Engage with content you love</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">👥</span>
+          <h3>Follow People</h3>
+          <p>Build your personal feed from people you follow</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔭</span>
+          <h3>Explore</h3>
+          <p>Discover new creators and trending posts</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2024 Vibe — Built with Node.js + Express + MongoDB</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">⚡ Vibe</div>
+      <h1>Welcome Back</h1>
+      <p class="auth-subtitle">Login to your Vibe account</p>
+
+      <form action="/auth/login" method="POST" class="auth-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="abha@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Your password" required />
+        </div>
+        <button type="submit" class="btn btn-primary full-width btn-lg">Login</button>
+      </form>
+
+      <p class="auth-footer">New to Vibe? <a href="/auth/register">Create account</a></p>
+    </div>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/auth/register.ejs ===
+<!-- views/auth/register.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="auth-container">
+    <div class="auth-card">
+      <div class="auth-logo">⚡ Vibe</div>
+      <h1>Create Account</h1>
+      <p class="auth-subtitle">Join thousands sharing their world</p>
+
+      <form action="/auth/register" method="POST" class="auth-form">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" name="name" placeholder="Abha Sharma" required />
+        </div>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" name="username" placeholder="abha_codes" pattern="[a-z0-9_.]+" title="Lowercase letters, numbers, _ and . only" required />
+          <small class="form-hint">Letters, numbers, _ and . only. No spaces.</small>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="abha@example.com" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Min 6 characters" minlength="6" required />
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" name="confirmPassword" placeholder="Repeat password" required />
+        </div>
+        <button type="submit" class="btn btn-primary full-width btn-lg">Create Account</button>
+      </form>
+
+      <p class="auth-footer">Already have an account? <a href="/auth/login">Login</a></p>
+    </div>
+  </div>
+  <script src="/js/main.js"></script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/posts/explore.ejs ===
+<!-- views/posts/explore.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <h1 class="page-title">🔭 Explore</h1>
+    <p class="page-subtitle">Discover posts from everyone on Vibe</p>
+
+    <% if (posts.length === 0) { %>
+      <div class="empty-feed">
+        <div class="empty-icon">📭</div>
+        <h3>No posts yet</h3>
+        <p>Be the first to share something!</p>
+        <a href="/posts/new" class="btn btn-primary mt-2">Create Post</a>
+      </div>
+    <% } else { %>
+      <div class="explore-grid">
+        <% posts.forEach(post => { %>
+          <%- include('../partials/post-card', { post, currentUserId }) %>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/posts/new.ejs ===
+<!-- views/posts/new.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>New Post | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <div class="new-post-card">
+      <div class="new-post-header">
+        <img src="<%= currentUser.avatar %>" alt="" class="post-avatar" />
+        <div>
+          <div class="post-author-name"><%= currentUser.name %></div>
+          <div class="post-author-username">@<%= currentUser.username %></div>
+        </div>
+      </div>
+
+      <form action="/posts" method="POST" enctype="multipart/form-data" class="new-post-form">
+
+        <!-- Caption / Text -->
+        <div class="form-group">
+          <textarea
+            name="caption"
+            placeholder="What's on your mind?"
+            rows="4"
+            class="post-textarea"
+            maxlength="2200"
+            id="captionInput"
+          ></textarea>
+          <div class="char-count"><span id="charCount">0</span>/2200</div>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="form-group">
+          <label class="image-upload-label">
+            📸 Add Photo (optional)
+            <input type="file" name="image" accept="image/*" id="imageInput" hidden />
+          </label>
+          <img id="imagePreview" src="" alt="" class="post-image-preview hidden" />
+        </div>
+
+        <div class="new-post-actions">
+          <a href="/feed" class="btn btn-outline">Cancel</a>
+          <button type="submit" class="btn btn-primary btn-lg">Share Post ✨</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+  <script>
+    // Live character count
+    const caption = document.getElementById("captionInput");
+    const count = document.getElementById("charCount");
+    caption.addEventListener("input", () => {
+      count.textContent = caption.value.length;
+      count.style.color = caption.value.length > 2000 ? "#e94560" : "";
+    });
+
+    // Image preview
+    document.getElementById("imageInput").addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const preview = document.getElementById("imagePreview");
+          preview.src = e.target.result;
+          preview.classList.remove("hidden");
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/users/profile.ejs ===
+<!-- views/users/profile.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+
+    <!-- Profile Header Card -->
+    <div class="profile-card">
+      <div class="profile-cover"></div>
+      <div class="profile-info">
+        <img src="<%= profileUser.avatar %>" alt="<%= profileUser.name %>" class="profile-avatar" />
+
+        <div class="profile-details">
+          <div class="profile-name-row">
+            <h1 class="profile-name"><%= profileUser.name %></h1>
+            <% if (isOwnProfile) { %>
+              <a href="/users/settings" class="btn btn-outline btn-sm">Edit Profile</a>
+            <% } else { %>
+              <form action="/users/<%= profileUser._id %>/follow" method="POST" style="display:inline">
+                <button type="submit" class="btn <%= isFollowing ? 'btn-outline' : 'btn-primary' %> btn-sm">
+                  <%= isFollowing ? 'Unfollow' : 'Follow' %>
+                </button>
+              </form>
+            <% } %>
+          </div>
+
+          <p class="profile-username">@<%= profileUser.username %></p>
+          <% if (profileUser.bio) { %>
+            <p class="profile-bio"><%= profileUser.bio %></p>
+          <% } %>
+
+          <!-- Stats -->
+          <div class="profile-stats">
+            <div class="stat">
+              <span class="stat-num"><%= posts.length %></span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <a href="/users/<%= profileUser.username %>/followers" class="stat">
+              <span class="stat-num"><%= profileUser.followers.length %></span>
+              <span class="stat-label">Followers</span>
+            </a>
+            <a href="/users/<%= profileUser.username %>/following" class="stat">
+              <span class="stat-num"><%= profileUser.following.length %></span>
+              <span class="stat-label">Following</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Posts Grid -->
+    <div class="profile-posts-section">
+      <h2 class="section-title">Posts</h2>
+
+      <% if (posts.length === 0) { %>
+        <div class="empty-state">
+          <p>No posts yet.</p>
+          <% if (isOwnProfile) { %>
+            <a href="/posts/new" class="btn btn-primary mt-2">Share your first post</a>
+          <% } %>
+        </div>
+      <% } else { %>
+        <div class="posts-feed">
+          <% posts.forEach(post => { %>
+            <%- include('../partials/post-card', { post, currentUserId }) %>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/users/edit-profile.ejs ===
+<!-- views/users/edit-profile.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Profile | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <div class="settings-card">
+      <h1 class="page-title">⚙️ Edit Profile</h1>
+
+      <form action="/users/settings" method="POST" enctype="multipart/form-data" class="settings-form">
+
+        <!-- Avatar Upload -->
+        <div class="avatar-upload-section">
+          <img src="<%= profileUser.avatar %>" alt="" class="settings-avatar" id="avatarPreview" />
+          <label class="btn btn-outline btn-sm avatar-upload-btn">
+            Change Photo
+            <input type="file" name="avatar" accept="image/*" id="avatarInput" hidden />
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label>Display Name</label>
+          <input type="text" name="name" value="<%= profileUser.name %>" required />
+        </div>
+
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" value="@<%= profileUser.username %>" disabled class="disabled-input" />
+          <small class="form-hint">Username cannot be changed</small>
+        </div>
+
+        <div class="form-group">
+          <label>Bio <span class="muted">(max 160 chars)</span></label>
+          <textarea name="bio" rows="3" maxlength="160" placeholder="Tell people a bit about yourself..."><%= profileUser.bio %></textarea>
+          <div class="char-count"><span id="bioCount"><%= profileUser.bio.length %></span>/160</div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+          <a href="/users/<%= profileUser.username %>" class="btn btn-outline btn-lg">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/main.js"></script>
+  <script>
+    // Avatar preview
+    document.getElementById("avatarInput").addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => document.getElementById("avatarPreview").src = e.target.result;
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Bio char count
+    const bio = document.querySelector("textarea[name='bio']");
+    const bioCount = document.getElementById("bioCount");
+    bio.addEventListener("input", () => bioCount.textContent = bio.value.length);
+  </script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/users/search.ejs ===
+<!-- views/users/search.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <h1 class="page-title">🔍 Search People</h1>
+
+    <form action="/users/search" method="GET" class="search-form">
+      <input
+        type="text"
+        name="q"
+        value="<%= query %>"
+        placeholder="Search by name or username..."
+        class="search-bar-input"
+        autofocus
+      />
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <% if (query && users.length === 0) { %>
+      <div class="empty-state mt-4">
+        <p>No users found for "<%= query %>"</p>
+      </div>
+    <% } %>
+
+    <% if (users.length > 0) { %>
+      <p class="result-count mt-4"><%= users.length %> result(s) for "<%= query %>"</p>
+      <div class="user-list">
+        <% users.forEach(user => { %>
+          <a href="/users/<%= user.username %>" class="user-list-item">
+            <img src="<%= user.avatar %>" alt="" class="user-list-avatar" />
+            <div class="user-list-info">
+              <span class="user-list-name"><%= user.name %></span>
+              <span class="user-list-username">@<%= user.username %></span>
+            </div>
+            <span class="chevron">→</span>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/users/suggested.ejs ===
+<!-- views/users/suggested.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discover People | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <h1 class="page-title">👥 Discover People</h1>
+    <p class="page-subtitle">People you might want to follow</p>
+
+    <% if (users.length === 0) { %>
+      <div class="empty-state">
+        <p>You're following everyone! Check back later.</p>
+      </div>
+    <% } else { %>
+      <div class="discover-grid">
+        <% users.forEach(user => { %>
+          <div class="discover-card">
+            <a href="/users/<%= user.username %>">
+              <img src="<%= user.avatar %>" alt="" class="discover-avatar" />
+              <h3 class="discover-name"><%= user.name %></h3>
+              <p class="discover-username">@<%= user.username %></p>
+              <% if (user.bio) { %>
+                <p class="discover-bio"><%= user.bio %></p>
+              <% } %>
+              <p class="discover-followers"><%= user.followers.length %> followers</p>
+            </a>
+            <form action="/users/<%= user._id %>/follow" method="POST">
+              <button type="submit" class="btn btn-primary btn-sm full-width">Follow</button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/users/follow-list.ejs ===
+<!-- views/users/follow-list.ejs -->
+<!-- Reused for both followers and following pages -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <div class="container mt-4">
+    <a href="/users/<%= profileUser.username %>" class="back-link">← @<%= profileUser.username %></a>
+    <h1 class="page-title"><%= listTitle %></h1>
+
+    <% if (users.length === 0) { %>
+      <div class="empty-state">
+        <p>No <%= listTitle.toLowerCase() %> yet.</p>
+      </div>
+    <% } else { %>
+      <div class="user-list">
+        <% users.forEach(user => { %>
+          <a href="/users/<%= user.username %>" class="user-list-item">
+            <img src="<%= user.avatar %>" alt="" class="user-list-avatar" />
+            <div class="user-list-info">
+              <span class="user-list-name"><%= user.name %></span>
+              <span class="user-list-username">@<%= user.username %></span>
+              <% if (user.bio) { %>
+                <span class="user-list-bio"><%= user.bio %></span>
+              <% } %>
+            </div>
+            <span class="chevron">→</span>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/landing.ejs ===
+<!-- views/landing.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body class="landing-body">
+  <%- include('partials/navbar') %>
+
+  <section class="landing-hero">
+    <div class="landing-content">
+      <div class="landing-text">
+        <h1>Share Your <span class="gradient-text">Vibe</span> With The World</h1>
+        <p>Connect with people, share moments, follow creators, and build your community.</p>
+        <div class="landing-cta">
+          <a href="/auth/register" class="btn btn-primary btn-lg">Get Started — It's Free</a>
+          <a href="/auth/login" class="btn btn-outline btn-lg">Login</a>
+        </div>
+      </div>
+      <div class="landing-features">
+        <div class="feature-card">
+          <span class="feature-icon">📸</span>
+          <h3>Share Posts</h3>
+          <p>Share photos and thoughts with your followers</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">❤️</span>
+          <h3>Like & Comment</h3>
+          <p>Engage with content you love</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">👥</span>
+          <h3>Follow People</h3>
+          <p>Build your personal feed from people you follow</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">🔭</span>
+          <h3>Explore</h3>
+          <p>Discover new creators and trending posts</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2024 Vibe — Built with Node.js + Express + MongoDB</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
+
+=== /home/claude/socialmedia/frontend/views/error.ejs ===
+<!-- views/error.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> | Vibe</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <%- include('partials/navbar') %>
+  <div class="container mt-4 center">
+    <h1 style="font-size:4rem">😕</h1>
+    <h2><%= title %></h2>
+    <p class="muted"><%= message %></p>
+    <a href="/" class="btn btn-primary mt-2">Go Home</a>
+  </div>
+</body>
+</html>

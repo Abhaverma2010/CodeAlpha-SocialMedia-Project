@@ -1,0 +1,36 @@
+<!-- partials/navbar.ejs -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/feed" class="nav-brand">⚡ Vibe</a>
+
+    <% if (currentUser) { %>
+      <!-- Search Bar -->
+      <form action="/search" method="GET" class="nav-search">
+        <input type="text" name="q" placeholder="Search people..." class="nav-search-input" />
+        <button type="submit">🔍</button>
+      </form>
+
+      <ul class="nav-links">
+        <li><a href="/feed" title="Feed">🏠 Feed</a></li>
+        <li><a href="/explore" title="Explore">🔭 Explore</a></li>
+        <li><a href="/users/discover" title="Discover">👥 Discover</a></li>
+        <li><a href="/posts/new" class="btn btn-primary btn-sm">+ Post</a></li>
+        <li>
+          <a href="/users/<%= currentUser.username %>" class="nav-avatar-link">
+            <img src="<%= currentUser.avatar %>" alt="<%= currentUser.name %>" class="nav-avatar" />
+            <span>@<%= currentUser.username %></span>
+          </a>
+        </li>
+        <li><a href="/users/settings" title="Settings">⚙️</a></li>
+        <li><a href="/auth/logout" class="btn btn-outline btn-sm">Logout</a></li>
+      </ul>
+    <% } else { %>
+      <ul class="nav-links">
+        <li><a href="/auth/login" class="btn btn-outline btn-sm">Login</a></li>
+        <li><a href="/auth/register" class="btn btn-primary btn-sm">Join Vibe</a></li>
+      </ul>
+    <% } %>
+
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </div>
+</nav>
